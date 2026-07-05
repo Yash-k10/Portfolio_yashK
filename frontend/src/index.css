@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    @apply bg-cream text-ink font-body antialiased;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-accent rounded-full;
+  }
+
+  ::selection {
+    @apply bg-accent-mid text-ink;
+  }
+}
+
+@layer components {
+  .nav-link {
+    @apply relative text-slate font-body font-medium text-sm transition-all duration-300 hover:text-accent;
+  }
+
+  .nav-link::after {
+    content: '';
+    @apply absolute -bottom-1 left-0 w-0 h-0.5 bg-accent rounded-full transition-all duration-300;
+  }
+
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    @apply w-full;
+  }
+
+  .nav-link.active {
+    @apply text-accent;
+  }
+
+  .section-tag {
+    @apply inline-flex items-center gap-2 px-3 py-1.5 bg-accent-light border border-accent-mid rounded-full text-accent text-xs font-mono font-medium tracking-wider uppercase;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl border border-border shadow-sm hover:shadow-md transition-all duration-300;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 bg-accent text-white rounded-xl font-body font-medium text-sm transition-all duration-200 hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200 hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 bg-white text-ink border border-border rounded-xl font-body font-medium text-sm transition-all duration-200 hover:border-accent hover:text-accent hover:shadow-sm active:scale-95;
+  }
+
+  .skill-pill {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-border rounded-lg text-sm font-body font-medium text-slate hover:border-accent hover:text-accent hover:bg-accent-light transition-all duration-200 cursor-default;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-accent to-blue-400 bg-clip-text text-transparent;
+  }
+
+  .section-wrapper {
+    @apply py-20 px-6 max-w-5xl mx-auto;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 bg-white border border-border rounded-xl text-ink font-body text-sm placeholder-slate focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-200;
+  }
+}
+
+/* Animated background blobs */
+.blob {
+  border-radius: 50%;
+  filter: blur(80px);
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Vertical nav indicator */
+.side-nav-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+/* Page transition */
+.page-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.5s ease;
+}

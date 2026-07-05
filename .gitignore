@@ -1,0 +1,36 @@
+# Dependency directories
+**/node_modules/
+node_modules/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+**/.env
+**/.env.local
+
+# Build outputs
+**/dist/
+dist/
+build/
+.next/
+
+# IDEs and editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Antigravity IDE files
+.antigravity*
+.gemini*
+.agents*
