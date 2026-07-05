@@ -109,7 +109,7 @@ export default function About() {
               <div>
                 <p className="text-white font-display font-semibold text-lg">Yash Kapse</p>
                 <p className="text-blue-100 font-body text-sm">Machine Learning Engineer</p>
-                <p className="text-blue-200 font-mono text-xs mt-1">yash.kapse@email.com</p>
+                <p className="text-blue-200 font-mono text-xs mt-1">yashkapse3154@gmail.com</p>
               </div>
             </motion.div>
           </motion.div>

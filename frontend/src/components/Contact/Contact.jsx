@@ -9,7 +9,7 @@ import {
 import { sendContact, getContactInfo } from '../../utils/api'
 
 const DEFAULT_CONTACT = {
-  email: 'yash.kapse@email.com',
+  email: 'yashkapse3154@gmail.com',
   phone: '+91 98765 43210',
   linkedin: 'https://linkedin.com/in/yashkapse',
   github: 'https://github.com/yashkapse',

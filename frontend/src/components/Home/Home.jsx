@@ -172,7 +172,7 @@ export default function Home() {
                 <RiLinkedinLine size={17} />
               </a>
               <a
-                href="mailto:yash.kapse@email.com"
+                href="mailto:yashkapse3154@gmail.com"
                 className="w-9 h-9 flex items-center justify-center rounded-xl border border-border text-slate hover:border-accent hover:text-accent hover:bg-accent-light transition-all duration-200"
                 aria-label="Email"
               >
