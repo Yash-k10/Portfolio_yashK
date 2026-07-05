@@ -3,6 +3,7 @@ services:
     name: yash-kapse-portfolio-api
     env: node
     plan: free
+    rootDir: backend
     buildCommand: npm install
     startCommand: npm start
     healthCheckPath: /api/health
