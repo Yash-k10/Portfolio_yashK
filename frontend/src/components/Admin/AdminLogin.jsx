@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import toast from 'react-hot-toast'
 import { RiLockLine, RiUser3Line, RiEyeLine, RiEyeOffLine } from 'react-icons/ri'
 import { useAuth } from '../../context/AuthContext'
+import api from '../../utils/api'
 
 export default function AdminLogin() {
   const [form, setForm] = useState({ username: '', password: '' })
@@ -18,25 +19,10 @@ export default function AdminLogin() {
     setLoading(true)
 
     try {
-      console.log('Attempting login with:', form.username)
-
-      const response = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: form.username.trim(),
-          password: form.password,
-        }),
+      const { data } = await api.post('/auth/login', {
+        username: form.username.trim(),
+        password: form.password,
       })
-
-      console.log('Response status:', response.status)
-      const data = await response.json()
-      console.log('Response data:', data)
-
-      if (!response.ok) {
-        toast.error(data.error || 'Invalid credentials')
-        return
-      }
 
       if (data.token) {
         login(data.token)
@@ -46,8 +32,9 @@ export default function AdminLogin() {
         toast.error('No token received')
       }
     } catch (err) {
-      console.error('Login fetch error:', err)
-      toast.error('Cannot connect to backend. Is it running on port 5000?')
+      console.error('Login error:', err)
+      const message = err.response?.data?.error || 'Cannot connect to backend. Please try again.'
+      toast.error(message)
     } finally {
       setLoading(false)
     }
