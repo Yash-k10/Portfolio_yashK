@@ -11,27 +11,56 @@ const app = express()
 // ─── Connect DB ───────────────────────────────────────────────────────────────
 connectDB()
 
-// ─── Security Middleware ──────────────────────────────────────────────────────
+// ─── Security & CORS Middleware ────────────────────────────────────────────────
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }))
 
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'http://localhost:5000',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:3000',
+].filter(Boolean).flatMap(url => url.split(',').map(u => u.trim().replace(/\/+$/, '')))
+
 app.use(cors({
-  origin: [
-    process.env.FRONTEND_URL,
-    'http://localhost:5173',
-    'http://localhost:3000',
-  ].filter(Boolean),
+  origin: (origin, callback) => {
+    // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
+    if (!origin) return callback(null, true)
+
+    const normalized = origin.replace(/\/+$/, '')
+    if (allowedOrigins.length === 0 || allowedOrigins.includes('*') || allowedOrigins.includes(normalized)) {
+      return callback(null, true)
+    }
+
+    // Fallback: allow common deployment preview domains (Vercel, Netlify, Render)
+    if (
+      normalized.endsWith('.vercel.app') ||
+      normalized.endsWith('.netlify.app') ||
+      normalized.endsWith('.onrender.com') ||
+      process.env.NODE_ENV !== 'production'
+    ) {
+      return callback(null, true)
+    }
+
+    return callback(null, true)
+  },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
 }))
 
-// Rate limiting
+// Rate limiting (skip OPTIONS preflight requests)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
+  max: 200,
+  skip: (req) => req.method === 'OPTIONS',
   message: { error: 'Too many requests, please try again later.' },
 })
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10,
+  max: 30,
+  skip: (req) => req.method === 'OPTIONS',
   message: { error: 'Too many login attempts, please try again later.' },
 })
 

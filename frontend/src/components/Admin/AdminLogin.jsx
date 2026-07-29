@@ -33,8 +33,15 @@ export default function AdminLogin() {
       }
     } catch (err) {
       console.error('Login error:', err)
-      const message = err.response?.data?.error || 'Cannot connect to backend. Please try again.'
-      toast.error(message)
+      let message = err.response?.data?.error
+      if (!message) {
+        if (err.code === 'ECONNABORTED') {
+          message = 'Backend server is starting up (cold start). Please wait 10 seconds and try again.'
+        } else {
+          message = 'Cannot connect to backend. Please check your internet connection or backend server status.'
+        }
+      }
+      toast.error(message, { duration: 5000 })
     } finally {
       setLoading(false)
     }

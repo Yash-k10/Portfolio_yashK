@@ -9,7 +9,10 @@ exports.login = async (req, res) => {
       return res.status(400).json({ error: 'Username and password required' })
     }
 
-    const admin = await Admin.findOne({ username: username.trim() })
+    const cleanUsername = username.trim()
+    const admin = await Admin.findOne({
+      username: { $regex: new RegExp(`^${cleanUsername.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') },
+    })
     if (!admin) return res.status(401).json({ error: 'Invalid credentials' })
 
     const valid = await bcrypt.compare(password, admin.password)

@@ -1,11 +1,12 @@
 import axios from 'axios'
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+const rawBase = (import.meta.env.VITE_API_URL || 'http://localhost:5000').trim().replace(/\/+$/, '')
+const baseURL = rawBase.endsWith('/api') ? rawBase : `${rawBase}/api`
 
 const api = axios.create({
-  baseURL: `${API_BASE}/api`,
+  baseURL,
   headers: { 'Content-Type': 'application/json' },
-  timeout: 30000,
+  timeout: 60000, // 60 seconds to accommodate Render free tier cold starts
 })
 
 api.interceptors.request.use((config) => {
